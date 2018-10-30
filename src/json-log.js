@@ -4,7 +4,7 @@ class JsonLog {
 
   constructor(service, logLevel){
     this.service = service
-    this.logLevel = logLevel
+    this.logLevel = logLevel || LOG_CONSTANTS.LEVEL.INFO
   }
 
   log(message, tags){
@@ -12,11 +12,13 @@ class JsonLog {
   }
 
   info(message, tags){
-    this._log(LOG_CONSTANTS.LEVEL.INFO, message, tags)
+    if(LOG_CONSTANTS.LEVEL.ERROR !== this.logLevel)
+      this._log(LOG_CONSTANTS.LEVEL.INFO, message, tags)
   }
 
   debug(message, tags){
-    this._log(LOG_CONSTANTS.LEVEL.DEBUG, message, tags)
+    if(LOG_CONSTANTS.LEVEL.DEBUG === this.logLevel)
+      this._log(LOG_CONSTANTS.LEVEL.DEBUG, message, tags)
   }
 
   error(message, stacktrace, tags){
@@ -33,6 +35,10 @@ class JsonLog {
     } else{
       console.log(JSON.stringify(logObj))
     }
+  }
+
+  setLogLevel(logLevel){
+    this.logLevel = logLevel
   }
 
 }

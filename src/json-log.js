@@ -1,10 +1,10 @@
 const LOG_CONSTANTS = require('./log-constants')
+let currentLogLevel =  LOG_CONSTANTS.LEVEL.INFO
 
 class JsonLog {
 
-  constructor(service, logLevel){
+  constructor(service){
     this.service = service
-    this.logLevel = logLevel || LOG_CONSTANTS.LEVEL.INFO
   }
 
   log(message, tags){
@@ -12,12 +12,12 @@ class JsonLog {
   }
 
   info(message, tags){
-    if(LOG_CONSTANTS.LEVEL.ERROR !== this.logLevel)
+    if(LOG_CONSTANTS.LEVEL.ERROR !== currentLogLevel)
       this._log(LOG_CONSTANTS.LEVEL.INFO, message, tags)
   }
 
   debug(message, tags){
-    if(LOG_CONSTANTS.LEVEL.DEBUG === this.logLevel)
+    if(LOG_CONSTANTS.LEVEL.DEBUG === currentLogLevel)
       this._log(LOG_CONSTANTS.LEVEL.DEBUG, message, tags)
   }
 
@@ -37,8 +37,8 @@ class JsonLog {
     }
   }
 
-  setLogLevel(logLevel){
-    this.logLevel = logLevel
+  static setLogLevel(logLevel){
+    currentLogLevel = logLevel
   }
 
 }

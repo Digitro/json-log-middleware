@@ -12,13 +12,13 @@ const logRequest = (app, service, generateValId) => {
 
   return function(req, res, next) {
     //identificador da requisição
-    let valId = req.header(LOG_CONSTANTS.VALID_HEADER)
+    let valId = req.header(LOG_CONSTANTS.TRACE_HEADER)
     if(!valId && generateValId){
       valId = uuidv1()
-      req.headers[LOG_CONSTANTS.VALID_HEADER] = valId
+      req.headers[LOG_CONSTANTS.TRACE_HEADER] = valId
     }
     if(valId){
-      res.set(LOG_CONSTANTS.VALID_HEADER, valId)
+      res.set(LOG_CONSTANTS.TRACE_HEADER, valId)
     }
     //logando as informações
     const tags = {url: req.url, params: req.params, method:req.method, valId:valId}

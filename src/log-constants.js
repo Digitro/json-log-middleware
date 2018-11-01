@@ -1,5 +1,5 @@
 const LOG_CONSTANTS = {
-  VALID_HEADER: 'x-val-id',
+  TRACE_HEADER: 'x-val-id',
   LEVEL: {
     INFO: 'INFO',
     DEBUG: 'DEBUG',

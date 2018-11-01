@@ -1,8 +1,9 @@
 const JsonLog = require('./json-log')
 const uuidv1 = require('uuid/v1')
+const LOG_CONSTANTS = require('./log-constants')
 
-const logRequest = (app, service) => {
-  const logger = new JsonLog('queue-service')
+const logRequest = (app, service, generateValId) => {
+  const logger = new JsonLog(service)
 
   app.get('/log/:logLevel', (req, res) => {
     JsonLog.setLogLevel(req.params.logLevel)
@@ -11,9 +12,14 @@ const logRequest = (app, service) => {
 
   return function(req, res, next) {
     //identificador da requisição
-    const valId = req.headers['X-VAL-ID'] || uuidv1()
-    req.headers['X-VAL-ID'] = valId
-    res.set('X-VAL-ID', valId)
+    let valId = req.header(LOG_CONSTANTS.VALID_HEADER)
+    if(!valId && generateValId){
+      valId = uuidv1()
+      req.headers[LOG_CONSTANTS.VALID_HEADER] = valId
+    }
+    if(valId){
+      res.set(LOG_CONSTANTS.VALID_HEADER, valId)
+    }
     //logando as informações
     const tags = {url: req.url, params: req.params, method:req.method, valId:valId}
     logger.debug('rest request => ' + valId, tags)

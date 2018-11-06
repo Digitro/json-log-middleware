@@ -2,6 +2,8 @@ const JsonLog = require('./json-log')
 const uuidv1 = require('uuid/v1')
 const LOG_CONSTANTS = require('./log-constants')
 
+const logContext = require('./log-context')
+
 const logRequest = (app, service, generateValId) => {
   const logger = new JsonLog(service)
 
@@ -18,11 +20,12 @@ const logRequest = (app, service, generateValId) => {
       req.headers[LOG_CONSTANTS.TRACE_HEADER] = valId
     }
     if(valId){
+      logContext.startNewContext(valId)
       res.set(LOG_CONSTANTS.TRACE_HEADER, valId)
     }
     //logando as informações
     const srcIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    const tags = {srcIp:srcIp, url: req.url, params: req.params, query: req.query, method:req.method, valId:valId}
+    const tags = {srcIp:srcIp, url: req.url, params: req.params, query: req.query, method:req.method}
     logger.debug('[REST request log interceptor]', tags)
     next()
   }

@@ -1,6 +1,8 @@
 const LOG_CONSTANTS = require('./log-constants')
 let currentLogLevel =  LOG_CONSTANTS.LEVEL.INFO
 
+const logContext = require('./log-context')
+
 class JsonLog {
 
   constructor(service){
@@ -29,6 +31,12 @@ class JsonLog {
     const logObj = {level, message, tags}
     logObj.service = this.service
     logObj.date = new Date()
+
+    //acrescentando identificador da requisição
+    if(logContext.getCurrentContext()){
+      logObj.valId = logContext.getCurrentContext()
+    }
+
     if (LOG_CONSTANTS.LEVEL.ERROR === level){
       logObj.stacktrace = stacktrace
       console.error(JSON.stringify(logObj))

@@ -63,6 +63,10 @@ class JsonLog {
     currentLogLevel = logLevel
   }
 
+  static getLogLevel(){
+    return currentLogLevel
+  }
+
 }
 
 module.exports = JsonLog

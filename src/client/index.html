@@ -1,0 +1,35 @@
+<htm>
+  <body>
+    <h1>Selecione o nível de log desejado</h1>
+    <select id="logLevel">
+      <option value="ERROR">ERROR</option>
+      <option value="INFO">INFO</option>
+      <option value="DEBUG">DEBUG</option>
+    </select>
+    <br/><br/>
+    Log Atual:
+    <div id="logAtual"></div>
+    <script>
+      const logLevel = document.getElementById('logLevel')
+      const logAtual = document.getElementById('logAtual')
+      logLevel.addEventListener('change', (event) => {
+        changeValue(logLevel.value)
+      })
+
+      const changeValue = (vLogLevel) => {
+        fetch('/log/level', {method: 'POST', body:vLogLevel}).then((result) => {
+          loadCurrentValue()
+        })
+      }
+
+      const loadCurrentValue = () => {
+        fetch('/log/level').then((res) => res.json()).then((jsonResult) => {
+          console.log(jsonResult)
+          logLevel.value = jsonResult
+          logAtual.innerText = logLevel.value
+        })
+      }
+      loadCurrentValue()
+    </script>
+  </body>
+</htm>

@@ -1,14 +1,26 @@
+const express = require('express')
+const bodyParser = require('body-parser')
 const JsonLog = require('./json-log')
 const uuidv1 = require('uuid/v1')
 const LOG_CONSTANTS = require('./log-constants')
-
 const logContext = require('./log-context')
 
 const logRequest = (app, service, generateValId) => {
   const logger = new JsonLog(service)
 
-  app.get('/log/:logLevel', (req, res) => {
-    JsonLog.setLogLevel(req.params.logLevel)
+  app.use(bodyParser.text())
+
+  app.use('/log', express.static(__dirname + '/client', {
+       index: 'index.html'
+  }))
+
+  app.get('/log/level', (req, res) => {
+    res.json(JsonLog.getLogLevel())
+  })
+
+  app.post('/log/level', (req, res) => {
+    const logLevel = req.body
+    JsonLog.setLogLevel(logLevel)
     res.sendStatus(200)
   })
 

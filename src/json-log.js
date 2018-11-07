@@ -23,11 +23,25 @@ class JsonLog {
       this._log(LOG_CONSTANTS.LEVEL.DEBUG, message, tags)
   }
 
-  error(message, stacktrace, tags){
-    this._log(LOG_CONSTANTS.LEVEL.ERROR, message, tags, stacktrace)
+  error(message, error, tags){
+    if (message instanceof Error) {
+      tags = error
+      error = message
+      message = error.message
+    }
+    if(error){
+      const errorInfo = {code: error.code, message: error.message}
+      //stack só é logado se estiver em modo debug
+      if(LOG_CONSTANTS.LEVEL.DEBUG === currentLogLevel){
+        errorInfo.stack = message.stack
+      }
+      this._log(LOG_CONSTANTS.LEVEL.ERROR, message, tags, errorInfo)
+    } else{
+      this._log(LOG_CONSTANTS.LEVEL.ERROR, message, tags)
+    }
   }
 
-  _log(level, message, tags, stacktrace){
+  _log(level, message, tags, errorInfo){
     const logObj = {level, message, tags}
     logObj.service = this.service
     logObj.date = new Date()
@@ -38,7 +52,7 @@ class JsonLog {
     }
 
     if (LOG_CONSTANTS.LEVEL.ERROR === level){
-      logObj.stacktrace = stacktrace
+      logObj.errorInfo = errorInfo
       console.error(JSON.stringify(logObj))
     } else{
       console.log(JSON.stringify(logObj))

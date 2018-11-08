@@ -17,7 +17,7 @@ logger.debug('MENSAGEM', OBJETO_JSON_TAGS(OPCIONAL))
 logger.error('MENSAGEM'(OPCIONAL), ERROR(OBJETO DE ERRO DO JAVASCRIPT), OBJETO_JSON_TAGS(OPCIONAL)(OPCIONAL))
 ```
 
-## Middleware para logar as requisições REST
+## Middleware para Express logar as requisições REST
 ```
 const {logMiddleware} = require('json-log-middleware')
 //Booleano para informar se deve gerar ou não um código de rastreio caso não receba um no header

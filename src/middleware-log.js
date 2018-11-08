@@ -14,6 +14,10 @@ const logRequest = (app, service, generateValId) => {
        index: 'index.html'
   }))
 
+  app.get('/log/service', (req, res) => {
+    res.json(service)
+  })
+
   app.get('/log/level', (req, res) => {
     res.json(JsonLog.getLogLevel())
   })

@@ -1,6 +1,7 @@
 <htm>
   <body>
     <h1>Selecione o nível de log desejado</h1>
+    <h2 id="serviceName"></h2>
     <select id="logLevel">
       <option value="ERROR">ERROR</option>
       <option value="INFO">INFO</option>
@@ -10,8 +11,10 @@
     Log Atual:
     <div id="logAtual"></div>
     <script>
+      const serviceName = document.getElementById('serviceName')
       const logLevel = document.getElementById('logLevel')
       const logAtual = document.getElementById('logAtual')
+
       logLevel.addEventListener('change', (event) => {
         changeValue(logLevel.value)
       })
@@ -29,6 +32,14 @@
           logAtual.innerText = logLevel.value
         })
       }
+
+      const loadServiceName = () => {
+        fetch('/log/service').then((res) => res.json()).then((jsonResult) => {
+          console.log(jsonResult)
+          serviceName.innerText = jsonResult
+        })
+      }
+      loadServiceName()
       loadCurrentValue()
     </script>
   </body>

@@ -18,6 +18,7 @@ const asyncHooks = createHook({
 const logContext = {
   startNewContext (data){
     storage.set(executionAsyncId(), {data})
+    return Promise.resolve()
   },
   getCurrentContext() {
     const context = storage.get(executionAsyncId())

@@ -41,7 +41,7 @@ const logRequest = (app, service, generateValId) => {
     }
     //logando as informações
     const srcIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    const tags = {srcIp:srcIp, url: req.url, params: req.params, query: req.query, method:req.method}
+    const tags = {srcIp:srcIp, url: req.url, params: req.params, query: req.query, method:req.method, headers:req.headers}
     logger.debug('[REST request log interceptor]', tags)
     next()
   }

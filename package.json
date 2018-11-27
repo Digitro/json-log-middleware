@@ -1,6 +1,6 @@
 {
   "name": "json-log-middleware",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "",
   "main": "src/index.js",
   "scripts": {

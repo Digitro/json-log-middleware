@@ -30,7 +30,7 @@ class JsonLog {
       message = error.message
     }
     if(error){
-      const errorInfo = {code: error.code, message: error.message}
+      const errorInfo = {code: error.code || error.statusCode, message: error.message}
       //stack só é logado se estiver em modo debug
       if(LOG_CONSTANTS.LEVEL.DEBUG === currentLogLevel){
         errorInfo.stack = message.stack
